@@ -5,6 +5,7 @@ import com.msa.bookstore.domain.inventory.InventoryInfo;
 import com.msa.bookstore.domain.inventory.InventoryRepository;
 import javax.transaction.Transactional;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,6 +28,7 @@ public class InventoryService {
         repository.save(newInventory);
     }
 
+    @Async
     @EventListener
     @Transactional
     public void register(BookInfoRegisteredEvent event) {

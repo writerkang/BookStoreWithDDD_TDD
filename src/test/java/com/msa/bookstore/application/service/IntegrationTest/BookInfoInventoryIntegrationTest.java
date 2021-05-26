@@ -24,13 +24,14 @@ class BookInfoInventoryIntegrationTest {
     private InventoryRepository inventoryRepository;
 
     @Test
-    void shouldRegisterInventoryWhenBookInfoRegistered() {
+    void shouldRegisterInventoryWhenBookInfoRegistered() throws InterruptedException {
         bookInfoRepository = new BookInfoTestRepository();
         bookInfoRegisterService = new BookInfoRegisterService(bookInfoRepository, new EventDispatcher(
             eventPublisher));
         RegisterBookInfoCommand command = new RegisterBookInfoCommand("A little price", "Jull Jebeker", 92441L);
 
         bookInfoRegisterService.registerBookInfo(command);
+        Thread.sleep(1000);
 
         var foundBookInfo = bookInfoRepository.findByIsbn(92441L);
         var result = inventoryRepository.findByBookInfoId(foundBookInfo.id());
