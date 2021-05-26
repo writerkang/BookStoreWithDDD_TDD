@@ -1,6 +1,6 @@
 package com.msa.bookstore.infra.repository;
 
-import com.msa.bookstore.application.service.bookinfo.BookInfo;
+import com.msa.bookstore.domain.bookinfo.BookInfo;
 import com.msa.bookstore.domain.bookinfo.BookInfoRepository;
 import java.util.HashMap;
 import java.util.Map;

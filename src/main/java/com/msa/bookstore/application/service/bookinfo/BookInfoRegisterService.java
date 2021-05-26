@@ -1,5 +1,6 @@
 package com.msa.bookstore.application.service.bookinfo;
 
+import com.msa.bookstore.domain.bookinfo.BookInfo;
 import com.msa.bookstore.domain.bookinfo.BookInfoRepository;
 import java.util.Objects;
 import javax.transaction.Transactional;

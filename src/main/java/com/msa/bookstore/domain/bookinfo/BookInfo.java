@@ -1,6 +1,5 @@
-package com.msa.bookstore.application.service.bookinfo;
+package com.msa.bookstore.domain.bookinfo;
 
-import java.awt.print.Book;
 import java.util.Objects;
 
 public class BookInfo {
