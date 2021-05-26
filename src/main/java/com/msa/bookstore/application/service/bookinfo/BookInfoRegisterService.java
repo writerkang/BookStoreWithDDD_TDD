@@ -4,11 +4,11 @@ import com.msa.bookstore.domain.bookinfo.BookInfoRepository;
 import java.util.Objects;
 import javax.transaction.Transactional;
 
-public class BookInfoService {
+public class BookInfoRegisterService {
 
     private final BookInfoRepository repository;
 
-    public BookInfoService(BookInfoRepository repository) {
+    public BookInfoRegisterService(BookInfoRepository repository) {
         this.repository = repository;
     }
 
@@ -30,7 +30,7 @@ public class BookInfoService {
             return;
         }
 
-        var newBookInfo = new BookInfo(command.title().strip(),
+        var newBookInfo = BookInfo.create(repository.nextId(), command.title().strip(),
             command.author().strip(), command.isbn());
 
         this.repository.save(newBookInfo);
