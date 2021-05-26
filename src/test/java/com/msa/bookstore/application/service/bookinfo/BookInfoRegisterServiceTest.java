@@ -1,15 +1,23 @@
 package com.msa.bookstore.application.service.bookinfo;
 
+import com.msa.bookstore.application.service.EventDispatcher;
 import com.msa.bookstore.domain.bookinfo.BookInfoRepository;
 import com.msa.bookstore.infra.repository.BookInfoTestRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
 
+@SpringBootTest
 class BookInfoRegisterServiceTest {
 
     private BookInfoRepository repository;
     private BookInfoRegisterService service;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     RegisterBookInfoCommand command = new RegisterBookInfoCommand("A little price", "Jull Jebeker", 9875281921L);
     RegisterBookInfoCommand another = new RegisterBookInfoCommand("Rabbit and Turtle", "Kol Shouder", 39402243L);
@@ -23,7 +31,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldRegisterOneBookInfo() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         service.registerBookInfo(command);
         var result = repository.count();
@@ -34,7 +42,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldRegisterTwoBooksInfo() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         service.registerBookInfo(command);
         service.registerBookInfo(another);
@@ -46,7 +54,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldIgnoreWhenBookInfoAlreadyRegistered() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         service.registerBookInfo(command);
         service.registerBookInfo(command);
@@ -58,7 +66,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldPreventInvalidTitle() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         Executable nullTitleResult = () -> service.registerBookInfo(nullTitle);
         Executable blankTitleResult = () -> service.registerBookInfo(blankTitle);
@@ -70,7 +78,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldPreventInvalidAuthor() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         Executable nullAuthorResult = () -> service.registerBookInfo(nullAuthor);
         Executable blankAuthorResult = () -> service.registerBookInfo(blankAuthor);
@@ -82,7 +90,7 @@ class BookInfoRegisterServiceTest {
     @Test
     void shouldPreventInvalidIsbn() {
         repository = new BookInfoTestRepository();
-        service = new BookInfoRegisterService(repository);
+        service = new BookInfoRegisterService(repository, new EventDispatcher(eventPublisher));
 
         Executable zeroIsbnResult = () -> service.registerBookInfo(zeroIsbn);
         Executable negativeIsbnResult = () -> service.registerBookInfo(negativeIsbn);

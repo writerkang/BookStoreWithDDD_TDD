@@ -1,9 +1,13 @@
 package com.msa.bookstore.application.service.inventory;
 
+import com.msa.bookstore.domain.bookinfo.BookInfoRegisteredEvent;
 import com.msa.bookstore.domain.inventory.InventoryInfo;
 import com.msa.bookstore.domain.inventory.InventoryRepository;
 import javax.transaction.Transactional;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
+@Component
 public class InventoryService {
 
     private final InventoryRepository repository;
@@ -17,6 +21,18 @@ public class InventoryService {
         var newInventory = InventoryInfo.create(
             repository.nextId(),
             bookInfoId,
+            0L
+        );
+
+        repository.save(newInventory);
+    }
+
+    @EventListener
+    @Transactional
+    public void register(BookInfoRegisteredEvent event) {
+        var newInventory = InventoryInfo.create(
+            repository.nextId(),
+            event.bookInfoId(),
             0L
         );
 

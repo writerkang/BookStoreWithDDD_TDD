@@ -22,10 +22,9 @@ public class BookInfoTestRepository implements BookInfoRepository {
 
     @Override
     public BookInfo findByIsbn(Long isbn) {
-
         return this.bookInfoMap.values()
             .stream()
-            .filter(bookInfo -> bookInfo.isbn() == isbn)
+            .filter(bookInfo -> bookInfo.isbn().equals(isbn))
             .findFirst()
             .orElse(null);
     }

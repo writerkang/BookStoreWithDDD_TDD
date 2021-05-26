@@ -5,7 +5,9 @@ import com.msa.bookstore.domain.inventory.InventoryInfo;
 import com.msa.bookstore.domain.inventory.InventoryRepository;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class InventoryTestRepository implements InventoryRepository {
     private final Map<Long, InventoryInfo> inventoryInfoMap = new HashMap<>();
     private static Long SEQUENCE = 0L;
@@ -14,7 +16,7 @@ public class InventoryTestRepository implements InventoryRepository {
     public InventoryInfo findByBookInfoId(Long bookInfoId) {
         return this.inventoryInfoMap.values()
             .stream()
-            .filter(inventoryInfo -> inventoryInfo.bookInfoId() == bookInfoId)
+            .filter(inventoryInfo -> inventoryInfo.bookInfoId().equals(bookInfoId))
             .findFirst()
             .orElse(null);
     }
